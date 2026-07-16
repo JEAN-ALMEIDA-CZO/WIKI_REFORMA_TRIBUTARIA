@@ -8,6 +8,10 @@
 
 Guia interativo completo sobre a **Reforma Tributária do Consumo (IBS, CBS e Imposto Seletivo)**, com **18 módulos didáticos** — do panorama legal à prática da apuração assistida — e uma **calculadora de markup e classificação CST/cClassTrib** para precificação na transição. Conteúdo baseado na **EC 132/2023** e na **LC 214/2025**, escrito para empresários, contadores e analistas fiscais.
 
+<p align="center">
+  <img src="docs/assets/og-cover.png" alt="Guia Didático & Calculadora — Reforma Tributária IBS/CBS" width="100%">
+</p>
+
 ---
 
 ## 🌐 Acesse Online
