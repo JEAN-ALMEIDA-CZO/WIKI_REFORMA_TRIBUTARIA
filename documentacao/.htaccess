@@ -1,0 +1,55 @@
+# ============================================================
+# Guia IBS/CBS — configuração Apache/cPanel (raiz do site)
+# ============================================================
+
+DirectoryIndex index.html
+
+# --- Segurança: nunca servir arquivos sensíveis ------------
+# .env fica bloqueado para visitantes. O app tenta lê-lo via
+# fetch e, ao receber 403, cai automaticamente na configuração
+# manual de chave (cada usuário usa a própria).
+<FilesMatch "^\.(env|htaccess|git.*)$">
+  Require all denied
+</FilesMatch>
+
+# --- MIME types corretos -----------------------------------
+<IfModule mod_mime.c>
+  AddType application/manifest+json .webmanifest
+  AddType application/json           .json
+  AddType image/png                  .png
+  AddType text/cache-manifest        .appcache
+</IfModule>
+
+# --- Service worker: nunca cachear o sw.js pelo navegador ---
+<IfModule mod_headers.c>
+  <FilesMatch "sw\.js$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+  # HTML sempre revalida (pega deploys novos na hora)
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# --- Compressão --------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json application/manifest+json image/svg+xml
+</IfModule>
+
+# --- Cache de estáticos (imagens/fontes) -------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/png  "access plus 7 days"
+  ExpiresByType image/x-icon "access plus 30 days"
+  ExpiresByType image/svg+xml "access plus 7 days"
+</IfModule>
+
+# --- HTTPS (descomente após o SSL estar ativo no cPanel) ---
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteCond %{HTTPS} off
+#   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# --- 404 volta para o app (rotas por hash, não quebra) -----
+ErrorDocument 404 /index.html
